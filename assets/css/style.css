@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body{
+    overflow: auto;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar{
+    display: none;
+}
+
+.logo{
+    height: 50px;
+    width:  50px;
+}
+
+.maroon{
+    color: #800000 !important;
+}
+
+.footer{
+    height: 5vh;
+    width:  100vw;
+}
+
+.bg-mar{
+    background-color: #800000;
+}
+
+.bg-maroon{
+    background-color: #800000;
+    min-height: 10vh;
+    max-height: auto;
+    width:  100vw;
+}
+
+.bg{
+    background-position: center;
+    background-size: cover;
+    content: '';
+    height: 85vh;
+    width: auto;
+    position: relative;
+    font-size: 2rem;
+}
+
+.bg-overlay{
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+header{
+    background-color: #800000;
+}
+
+h1{
+    font-family:'Lato', sans-serif;
+    color: white;
+    user-select: none;
+}
+
+.en:hover{
+    background-color:#800000 !important;
+}
