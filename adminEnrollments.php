@@ -8,7 +8,6 @@
 
         include('functions/php/config.php');
     ?>
-
     <head>
         <title>i-Enroll System</title>
         
@@ -21,8 +20,8 @@
 
     </head>
 
-    <body class="">
-        <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
             <div class="container-fluid">
                     <div class="d-flex flex-row align-items-center">
                         <a class="navbar-brand" href="home.php"><img class="logo" src="assets/img/school-logo.png" alt=""></a>
@@ -241,61 +240,74 @@
                     </div>
                 </div>
 
-                <div class="container-fluid d-flex flex-row justify-content-center align-items-center overflow-scroll" style="">
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                        <h1 class="fs-1 text-dark"> Admin Dashboard </h1>  
+                <div class="w-100 d-flex flex-column overflow-scroll p-3 px-lg-5" style="">
+                <div class="d-flex flex-column justify-content-center align-items-start">
+                    <h1 class="fs-1 text-dark"> Enrollment Forms </h1>
+                </div>
 
-                        <div class="d-flex gap-5">
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $studQuery = $con -> query("SELECT COUNT(*) as `count` from `user-student` WHERE `validation` = 'T'") or die($con -> error);
-                                        $studRes = $studQuery -> fetch_assoc();
-                                        $studcount = $studRes['count'];
-
-                                        echo $studcount;
-                                    ?>
-                                    Students Registered
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $facQuery = $con -> query("SELECT COUNT(*) as `count` from `user-faculty`") or die($con -> error);
-                                        $facRes = $facQuery -> fetch_assoc();
-                                        $faccount = $facRes['count'];
-
-                                        echo $faccount;
-                                    ?>
-                                    Faculty Members
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $currQuery = $con -> query("SELECT COUNT(*) as `count` from `curriculums`") or die($con -> error);
-                                        $currRes = $currQuery -> fetch_assoc();
-                                        $currcount = $currRes['count'];
-
-                                        echo $currcount;
-                                    ?>
-                                    Programs
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $sectQuery = $con -> query("SELECT COUNT(*) as `count` from `sections`") or die($con -> error);
-                                        $sectRes = $sectQuery -> fetch_assoc();
-                                        $sectcount = $sectRes['count'];
-
-                                        echo $sectcount;
-                                    ?>
-                                    Sections
-                                </div>
-                            </div>
-                        </div>
+                <div class="d-flex flex-column justify-content-between
+                            align-items-start gap-2 mt-5">
+                    <div class="w-100 d-flex flex-row justify-content-start align-items-start pb-0 border-bottom border-3 border-dark">
+                        <h2 class="fs-3 text-dark"> Forms List </h2>
+                        <input class="py-1 px-2 ms-auto" id="formSearch" type="text" placeholder="Search..">
                     </div>
+                    <?php
+                        include('functions/php/config.php');
+                        
+                        $query = "SELECT * FROM `user-student`";
+                        $result = $con->query($query);
+
+                        if(mysqli_num_rows($result) > 0): ?>
+                            <table id="" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Student Name</th>
+                                                <th>Program</th>
+                                                <th>Year Enrolled</th>
+                                                <th>Semester</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="formTable">
+                    
+                    <?php while ($row = $result -> fetch_assoc()): 
+                        $fulName = $row['fName'] . " " . $row['mName'] . " " . $row['lName'];
+                        $idStud = $row['idStud'];
+                        $squery = "SELECT * FROM `enroll-codes` WHERE `idStud` = '$idStud'";
+                        $sresult = $con->query($squery);
+                        while ($srow = $sresult -> fetch_assoc()):?>
+                        <tr>
+                            <td class=""><?php echo $fulName; ?></td>
+                            <td class=""><?php echo $row['program']; ?></td>
+                            <td class=""><?php echo $srow['year']; ?></td>
+                            <td class=""><?php echo $srow['semester']; ?></td>
+                            <td class="mx-auto text-center">
+                                <form
+                                    class=""
+                                    id="<?php echo $srow['enrollCode']; ?>"
+                                    target="_blank"
+                                    method="post" 
+                                    action="viewForm.php">
+                                    <input type="text" name="enrollCode" class="form-control form-control-lg input visually-hidden"
+                                                value="<?php echo $srow['enrollCode']; ?>" readonly />
+                                    <a href="javascript:$('#<?php echo $srow['enrollCode']; ?>').submit()" class="mx-1 clear text-muted view">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endwhile ?>
+                    <?php endwhile ?>
+                                        </tbody>
+                        </table>
+                    
+                    <?php else:?>        
+                        <div class="w-100 card card-body d-flex flex-column border border-dark bg-danger">
+                            <h2 class="fs-3 text-white text-center"> No Forms yet </h2>
+                        </div>
+
+                    <?php endif ?>
+                </div>
                 </div>
 
             </div>
@@ -304,6 +316,17 @@
         <div class="footer d-flex justify-content-center align-items-center bg-dark">
             <h1 class="text-white fs-6"> ©2022 Taguig City University. All Rights Reserved.</h1>
         </div>
+
+        <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#formSearch").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#formTable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
     </body>
 
 </html>

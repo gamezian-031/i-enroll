@@ -8,7 +8,6 @@
 
         include('functions/php/config.php');
     ?>
-
     <head>
         <title>i-Enroll System</title>
         
@@ -21,8 +20,8 @@
 
     </head>
 
-    <body class="">
-        <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
+    <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
             <div class="container-fluid">
                     <div class="d-flex flex-row align-items-center">
                         <a class="navbar-brand" href="home.php"><img class="logo" src="assets/img/school-logo.png" alt=""></a>
@@ -241,61 +240,127 @@
                     </div>
                 </div>
 
-                <div class="container-fluid d-flex flex-row justify-content-center align-items-center overflow-scroll" style="">
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                        <h1 class="fs-1 text-dark"> Admin Dashboard </h1>  
-
-                        <div class="d-flex gap-5">
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $studQuery = $con -> query("SELECT COUNT(*) as `count` from `user-student` WHERE `validation` = 'T'") or die($con -> error);
-                                        $studRes = $studQuery -> fetch_assoc();
-                                        $studcount = $studRes['count'];
-
-                                        echo $studcount;
-                                    ?>
-                                    Students Registered
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $facQuery = $con -> query("SELECT COUNT(*) as `count` from `user-faculty`") or die($con -> error);
-                                        $facRes = $facQuery -> fetch_assoc();
-                                        $faccount = $facRes['count'];
-
-                                        echo $faccount;
-                                    ?>
-                                    Faculty Members
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $currQuery = $con -> query("SELECT COUNT(*) as `count` from `curriculums`") or die($con -> error);
-                                        $currRes = $currQuery -> fetch_assoc();
-                                        $currcount = $currRes['count'];
-
-                                        echo $currcount;
-                                    ?>
-                                    Programs
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $sectQuery = $con -> query("SELECT COUNT(*) as `count` from `sections`") or die($con -> error);
-                                        $sectRes = $sectQuery -> fetch_assoc();
-                                        $sectcount = $sectRes['count'];
-
-                                        echo $sectcount;
-                                    ?>
-                                    Sections
-                                </div>
-                            </div>
-                        </div>
+                <div class="w-100 d-flex flex-column overflow-scroll p-3 px-lg-5" style="">
+                <div class="d-flex flex-column justify-content-center align-items-start">
+                    <h1 class="fs-1 text-dark"> University Curriculums </h1>
+                     
+                </div>
+                <div class="d-flex flex-column justify-content-between
+                            align-items-start gap-2">
+                    <div class="w-100 d-flex flex-row justify-content-start align-items-start pb-0 border-bottom border-3 border-dark">
+                        <h2 class="fs-3 text-dark"> Curriculum </h2>
+                        <a class="btn btn-success py-1 px-2 ms-auto" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <i class="bi bi-plus-circle"></i>
+                        </a>
                     </div>
+                    <div class="collapse w-100" id="collapseExample">
+                        <div class="card card-body d-flex flex-column border border-dark">
+                            <form   class=""    
+                                    method="post" 
+                                    action="functions/php/addCurriculum.php">
+                                <div class="container gap-2 d-flex flex-column">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-floating">
+                                                <input type="text" id="idCurr" name="idCurr" class="form-control form-control-lg input"
+                                                placeholder="Code" required />
+                                                <label class="form-label fs-6" for="idCurr">Curriculum Code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-floating">
+                                                <input type="text" id="idCourse" name="idCourse" class="form-control form-control-lg input"
+                                                placeholder="Course Code" required />
+                                                <label class="form-label fs-6" for="idCourse">Course Code</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-floating">
+                                                <input type="text" id="nameCurr" name="nameCurr" class="form-control form-control-lg input"
+                                                placeholder="Name" required />
+                                                <label class="form-label fs-6" for="nameCurr">Curriculum Name</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <select class="form-select input" name="department" id="department" required>
+                                                    <option value="" selected disabled>Department</option>
+                                                    <?php
+                                                    include('functions/php/config.php');
+                                                    
+                                                    $query = "SELECT * FROM `departments`";
+                                                    $result = $con->query($query);
+
+                                                    while ($row = $result -> fetch_assoc()): ?>
+                                                    <option value="<?php echo $row['idDept'];?>"><?php echo $row['nameDept'];?></option>
+                                                    <?php endwhile?>
+                                                </select>
+                                                <label for="department" class="form-label fs-6">Department</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-2 ms-auto">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> 
+                </div>
+
+                <div class="d-flex flex-column justify-content-between
+                            align-items-start gap-2 mt-5">
+                    <div class="w-100 d-flex flex-row justify-content-between align-items-start pb-0 border-bottom border-3 border-dark">
+                        <h2 class="fs-3 text-dark"> Curriculum List </h2>
+                        <input class="py-1 px-2 ms-auto" id="currSearch" type="text" placeholder="Search..">
+                    </div>
+                    <?php
+                        include('functions/php/config.php');
+                        
+                        $query = "SELECT * FROM curriculums";
+                        $result = $con->query($query);
+
+                        if(mysqli_num_rows($result) > 0): ?>
+                            <table id="" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Curriculum Code</th>
+                                                <th>Curriculum Name</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="currTable">
+                    
+                    <?php while ($row = $result -> fetch_assoc()): ?>
+                        <tr>
+                            <td class=""><?php echo $row['idCurr']; ?></td>
+                            <td class=""><?php echo $row['nameCurr']; ?></td>
+                            <td class="mx-auto text-center">
+                                <a href="#" class="mx-1 clear text-muted view" data-id="<?php echo $row['id']; ?>"
+                                    data-bs-toggle="modal" data-bs-target="#view-curr" id="<?php echo $row['id']; ?>">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                                <a href="#" class="mx-1 clear text-primary edit" data-id="<?php echo $row['id']; ?>"
+                                    data-bs-toggle="modal" data-bs-target="#edit-curr" id="<?php echo $row['id']; ?>">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="#" class="mx-1 clear text-danger delete" data-id="<?php echo $row['id']; ?>"
+                                    data-bs-toggle="modal" data-bs-target="#del-curr" id="<?php echo $row['id']; ?>">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endwhile ?>
+                                        </tbody>
+                        </table>
+                    
+                    <?php else:?>        
+                        <div class="w-100 card card-body d-flex flex-column border border-dark bg-danger">
+                            <h2 class="fs-3 text-white text-center"> No curriculums yet </h2>
+                        </div>
+
+                    <?php endif ?>
+                </div>
                 </div>
 
             </div>
@@ -304,6 +369,98 @@
         <div class="footer d-flex justify-content-center align-items-center bg-dark">
             <h1 class="text-white fs-6"> ©2022 Taguig City University. All Rights Reserved.</h1>
         </div>
+
+            <div class="modal fade" id="view-curr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">View Curriculum</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex flex-column gap-5">
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="modal fade" id="edit-curr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit Curriculum</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="modal fade" id="del-curr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Delete Curriculum</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('.view').click(function() {
+                        var uid = $(this).data('id');
+                        $.ajax({
+                            url: 'functions/php/viewCurr.php',
+                            type: 'post',
+                            data: {uid: uid},
+                            success: function(response){
+                                $('.modal-body').html(response);
+                                $('#view-curr').modal('show');
+                            }
+                        });
+                    });
+
+                    $('.edit').click(function() {
+                        var uid = $(this).data('id');
+                        $.ajax({
+                            url: 'functions/php/editCurr.php',
+                            type: 'post',
+                            data: {uid: uid},
+                            success: function(response){
+                                $('.modal-body').html(response);
+                                $('#edit-curr').modal('show');
+                            }
+                        });
+                    });
+
+                    $('.delete').click(function() {
+                        var uid = $(this).data('id');
+                        $.ajax({
+                            url: 'functions/php/delCurr.php',
+                            type: 'post',
+                            data: {uid: uid},
+                            success: function(response){
+                                $('.modal-body').html(response);
+                                $('#del-curr').modal('show');
+                            }
+                        });
+                    });
+
+                    $("#currSearch").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#currTable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
     </body>
 
 </html>

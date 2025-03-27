@@ -242,60 +242,43 @@
                 </div>
 
                 <div class="container-fluid d-flex flex-row justify-content-center align-items-center overflow-scroll" style="">
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                        <h1 class="fs-1 text-dark"> Admin Dashboard </h1>  
-
-                        <div class="d-flex gap-5">
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $studQuery = $con -> query("SELECT COUNT(*) as `count` from `user-student` WHERE `validation` = 'T'") or die($con -> error);
-                                        $studRes = $studQuery -> fetch_assoc();
-                                        $studcount = $studRes['count'];
-
-                                        echo $studcount;
-                                    ?>
-                                    Students Registered
+                    <div class="d-flex flex-column">
+                        <h1 class="fs-1 text-dark"> Configure System </h1>  
+                        <form       class=""    
+                                    method="post" 
+                                    action="functions/php/changeSystem.php">
+                                <div class="container gap-2 d-flex flex-column">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control input" id="year" name="year" maxlength="4" 
+                                                        min="2016" max="2099" step="1" value="<?php echo $currYear?>" required/>
+                                                <label for="year" class="form-label fs-6">Year</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-floating">
+                                                <input type="number" class="form-control input" id="sem" name="sem" maxlength="4" 
+                                                        min="1" max="2" step="1" value="<?php echo $currSem?>" required/>
+                                                <label for="sem" class="form-label fs-6">Semester</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                <select class="form-select input fs-6 border border-success" name="enrollState" id="enrollState">
+                                                    <option class="bg-white" selected disabled>Select Option</option> 
+                                                    <option class="bg-white" value="true" <?php if("true" == $enrollState) echo 'selected="selected"'; ?>>Active</option>
+                                                    <option class="bg-white" value="false" <?php if("false" == $enrollState) echo 'selected="selected"'; ?>>Inactive</option>
+                                                </select>
+                                                <label for="enrollState" class="form-label fs-6">Enrollment State</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Submit</button>
                                 </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $facQuery = $con -> query("SELECT COUNT(*) as `count` from `user-faculty`") or die($con -> error);
-                                        $facRes = $facQuery -> fetch_assoc();
-                                        $faccount = $facRes['count'];
-
-                                        echo $faccount;
-                                    ?>
-                                    Faculty Members
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $currQuery = $con -> query("SELECT COUNT(*) as `count` from `curriculums`") or die($con -> error);
-                                        $currRes = $currQuery -> fetch_assoc();
-                                        $currcount = $currRes['count'];
-
-                                        echo $currcount;
-                                    ?>
-                                    Programs
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $sectQuery = $con -> query("SELECT COUNT(*) as `count` from `sections`") or die($con -> error);
-                                        $sectRes = $sectQuery -> fetch_assoc();
-                                        $sectcount = $sectRes['count'];
-
-                                        echo $sectcount;
-                                    ?>
-                                    Sections
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </form>
                 </div>
 
             </div>

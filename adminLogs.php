@@ -8,7 +8,6 @@
 
         include('functions/php/config.php');
     ?>
-
     <head>
         <title>i-Enroll System</title>
         
@@ -22,7 +21,7 @@
     </head>
 
     <body class="">
-        <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
+    <nav class="navbar navbar-expand-lg navbar-light bg-maroon px-4">
             <div class="container-fluid">
                     <div class="d-flex flex-row align-items-center">
                         <a class="navbar-brand" href="home.php"><img class="logo" src="assets/img/school-logo.png" alt=""></a>
@@ -241,61 +240,51 @@
                     </div>
                 </div>
 
-                <div class="container-fluid d-flex flex-row justify-content-center align-items-center overflow-scroll" style="">
-                    <div class="d-flex flex-column justify-content-center align-items-center">
-                        <h1 class="fs-1 text-dark"> Admin Dashboard </h1>  
+                <div class="w-100 d-flex flex-column overflow-scroll p-3 px-lg-5" style="">
+                <div class="d-flex flex-row justify-content-between align-items-center border border-2 border-dark border-top-0 border-start-0 border-end-0">
+                    <h1 class="fs-1 text-dark"> System-Generated Logs </h1>
+                    <input class="py-1 px-2 ms-auto" id="logSearch" type="text" placeholder="Search..">
+                </div>
 
-                        <div class="d-flex gap-5">
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $studQuery = $con -> query("SELECT COUNT(*) as `count` from `user-student` WHERE `validation` = 'T'") or die($con -> error);
-                                        $studRes = $studQuery -> fetch_assoc();
-                                        $studcount = $studRes['count'];
+                <div class="d-flex flex-column justify-content-between
+                            align-items-start gap-2 mt-5 overflow-auto" style="max-height: 35rem;">
+                    <?php
+                        include('functions/php/config.php');
+                        
+                        $query = "SELECT * FROM logs";
+                        $result = $con->query($query);
 
-                                        echo $studcount;
-                                    ?>
-                                    Students Registered
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $facQuery = $con -> query("SELECT COUNT(*) as `count` from `user-faculty`") or die($con -> error);
-                                        $facRes = $facQuery -> fetch_assoc();
-                                        $faccount = $facRes['count'];
-
-                                        echo $faccount;
-                                    ?>
-                                    Faculty Members
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $currQuery = $con -> query("SELECT COUNT(*) as `count` from `curriculums`") or die($con -> error);
-                                        $currRes = $currQuery -> fetch_assoc();
-                                        $currcount = $currRes['count'];
-
-                                        echo $currcount;
-                                    ?>
-                                    Programs
-                                </div>
-                            </div>
-                            <div class="card bg-maroon">
-                                <div class="card-body text-white">
-                                    <?php 
-                                        $sectQuery = $con -> query("SELECT COUNT(*) as `count` from `sections`") or die($con -> error);
-                                        $sectRes = $sectQuery -> fetch_assoc();
-                                        $sectcount = $sectRes['count'];
-
-                                        echo $sectcount;
-                                    ?>
-                                    Sections
-                                </div>
-                            </div>
+                        if(mysqli_num_rows($result) > 0): 
+                        ?>
+                            <table id="" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Date Performed</th>
+                                                <th>Author</th>
+                                                <th>Action</th>
+                                                <th>Target</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="logTable">
+                    
+                    <?php while ($row = $result -> fetch_assoc()): ?>
+                        <tr>
+                            <td class=""><?php echo $row['date']; ?></td>
+                            <td class=""><?php echo $row['source']; ?></td>
+                            <td class=""><?php echo $row['action']; ?></td>
+                            <td class=""><?php echo $row['target']; ?></td>
+                        </tr>
+                    <?php endwhile ?>
+                                        </tbody>
+                        </table>
+                    
+                    <?php else:?>        
+                        <div class="w-100 card card-body d-flex flex-column border border-dark bg-danger">
+                            <h2 class="fs-3 text-white text-center"> No Logs yet </h2>
                         </div>
-                    </div>
+
+                    <?php endif ?>
+                </div>
                 </div>
 
             </div>
@@ -304,6 +293,17 @@
         <div class="footer d-flex justify-content-center align-items-center bg-dark">
             <h1 class="text-white fs-6"> ©2022 Taguig City University. All Rights Reserved.</h1>
         </div>
+
+        <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#logSearch").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $("#logTable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                });
+            </script>
     </body>
 
 </html>
