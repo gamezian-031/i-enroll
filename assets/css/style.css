@@ -3,10 +3,21 @@
 body{
     overflow: auto;
     scrollbar-width: none;
+    margin: 0;
+    padding: 0;
 }
 
 body::-webkit-scrollbar{
     display: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+ul{
+    list-style-type: none;
+    text-decoration: none;
 }
 
 .logo{
@@ -23,32 +34,28 @@ body::-webkit-scrollbar{
     width:  100vw;
 }
 
-.bg-mar{
-    background-color: #800000;
+.bg-maroon{
+    background-color: #800000 !important;
 }
 
-.bg-maroon{
-    background-color: #800000;
+.bd-maroon{
+    border-color: #800000 !important;
+}
+
+.navbar{
     min-height: 10vh;
-    max-height: auto;
     width:  100vw;
 }
 
 .bg{
     background-position: center;
     background-size: cover;
-    content: '';
-    height: 85vh;
-    width: auto;
-    position: relative;
     font-size: 2rem;
 }
 
+
 .bg-overlay{
     background-color: rgba(0, 0, 0, 0.5);
-    height: 100%;
-    width: 100%;
-    position: absolute;
 }
 
 header{
@@ -64,3 +71,29 @@ h1{
 .en:hover{
     background-color:#800000 !important;
 }
+
+.clear{
+    text-decoration: none;
+}
+
+.wrapper{
+}
+
+.divider{ 
+    opacity: 100%;
+    border-radius: 10px;
+}
+
+.patt{
+    margin-top: 6vh;
+    margin-bottom: 6vh;
+}
+
+.content{
+    height: 85vh;
+    width: 100vw;
+}
+
+
+
+
